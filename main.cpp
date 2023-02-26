@@ -311,6 +311,19 @@ void mutation(std::vector<MagicSquare> &population, double mutationProbability) 
  * @return
  */
 int main() {
+    char type;
+    bool infiniteLoop = false;
+
+
+    do
+    {
+        std::cout << "Run in infinite loop? [y/n]" << std::endl;
+        std::cin >> type;
+    }
+    while( !std::cin.fail() && type!='y' && type!='n' );
+
+    if(type == 'y') infiniteLoop = true;
+
     // Generate the initial population
     std::vector<MagicSquare> population;
     for (int i = 0; i < POPULATION_SIZE; i++) {
@@ -324,9 +337,11 @@ int main() {
     int unchanged_count = 0;
 
     for (int iteration = 0; iteration < MAX_ITERATIONS; iteration++) {
+        if(infiniteLoop) iteration--;
+
         // Evaluate the fitness of each square solution
-        for (auto &candidate: population) {
-            evaluateFitness(candidate, magicSum);
+        for (auto &square: population) {
+            evaluateFitness(square, magicSum);
         }
 
         // Check if we have found a solution
